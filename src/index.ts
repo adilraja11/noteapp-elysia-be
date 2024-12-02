@@ -1,7 +1,11 @@
 import { Elysia, t } from "elysia";
 import { prisma } from "./utils/prisma";
+import {swagger} from "@elysiajs/swagger"
 
 const app = new Elysia()
+  .use(swagger({
+    path: "/docs"
+  }))
   .get("/", async () => {
     const notes = await prisma.note.findMany();
     return notes;
@@ -29,7 +33,7 @@ const app = new Elysia()
       }
     });
 
-    return id;
+    return note;
   }) //get one note
   .patch("/:id", async ({ params, body }) => {
     const {id} = params;
